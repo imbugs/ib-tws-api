@@ -41,10 +41,15 @@ function todo(name) {
 //
 
 export default {
-  [IncomeMessageType.TICK_PRICE]: handler_TICK_PRICE,
-  [IncomeMessageType.TICK_SIZE]: handler_TICK_SIZE,
+  [IncomeMessageType.TICK_PRICE]: function (fields) {
+    this.emit('TICK_PRICE', fields);
+    handler_TICK_PRICE(fields);
+  },
 
-
+  [IncomeMessageType.TICK_SIZE]: function (fields) {
+    this.emit('TICK_SIZE', fields);
+    handler_TICK_SIZE(fields);
+  },
 
   [IncomeMessageType.ORDER_STATUS]: function (fields) {
     this.emit('ORDER_STATUS', fields);
@@ -88,6 +93,7 @@ export default {
 
 
   [IncomeMessageType.ERR_MSG]: function (fields) {
+    this.emit('ERR_MSG', fields);
     let requestId = fields[2];
 
     if (requestId > 0) {
@@ -105,7 +111,10 @@ export default {
 
 
 
-  [IncomeMessageType.OPEN_ORDER]: handler_OPEN_ORDER,
+  [IncomeMessageType.OPEN_ORDER]: function (fields) {
+    this.emit('OPEN_ORDER', fields);
+    handler_OPEN_ORDER(fields);
+  },
 
 
 
@@ -125,12 +134,14 @@ export default {
 
 
   [IncomeMessageType.NEXT_VALID_ID]: function (fields) {
+    this.emit('NEXT_VALID_ID', fields);
     this.messageTypeResolve(IncomeMessageType.NEXT_VALID_ID, parseInt(fields[2]));
   },
 
 
 
   [IncomeMessageType.CONTRACT_DATA]: function (fields) {
+    this.emit('CONTRACT_DATA', fields);
     fields.shift();
     let version = parseInt(fields.shift());
 
@@ -233,7 +244,6 @@ export default {
   // HandleInfo(proc=processExecutionDataMsg),
   [IncomeMessageType.EXECUTION_DATA]: function (fields) {
     this.emit('EXECUTION_DATA', fields);
-
     fields.shift();
     fields.shift();
     fields.shift();
@@ -289,6 +299,7 @@ export default {
 
 
   [IncomeMessageType.MANAGED_ACCTS]: function (fields) {
+    this.emit('MANAGED_ACCTS', fields);
     this.messageTypeResolve(IncomeMessageType.MANAGED_ACCTS, fields[2].split(','));
   },
 
@@ -302,6 +313,7 @@ export default {
 
 
   [IncomeMessageType.HISTORICAL_DATA]: function (fields) {
+    this.emit('HISTORICAL_DATA', fields);
     fields.shift();
 
     if (this.serverVersion < ServerVersion.MIN_SERVER_VER_SYNT_REALTIME_BARS) {
@@ -344,6 +356,7 @@ export default {
 
 
   [IncomeMessageType.HISTORICAL_DATA_UPDATE]: function (fields) {
+    this.emit('HISTORICAL_DATA_UPDATE', fields);
     fields.shift();
     let requestId = parseInt(fields.shift());
     let bar = {
@@ -371,6 +384,7 @@ export default {
 
   // HandleInfo(wrap=EWrapper.scannerParameters),
   [IncomeMessageType.SCANNER_PARAMETERS]: function (fields) {
+    this.emit('SCANNER_PARAMETERS', fields);
     this.messageTypeResolve(IncomeMessageType.SCANNER_PARAMETERS, fields[2]);
   },
 
@@ -378,7 +392,6 @@ export default {
 
   [IncomeMessageType.SCANNER_DATA]: function (fields) {
     this.emit('SCANNER_DATA', fields);
-
     fields.shift();
     fields.shift();
     let requestId = parseInt(fields.shift());
@@ -417,9 +430,18 @@ export default {
 
 
   // HandleInfo(proc=processTickOptionComputationMsg
-  [IncomeMessageType.TICK_OPTION_COMPUTATION]: handler_TICK_OPTION_COMPUTATION,
-  [IncomeMessageType.TICK_GENERIC]: handler_TICK_GENERIC,
-  [IncomeMessageType.TICK_STRING]: handler_TICK_STRING,
+  [IncomeMessageType.TICK_OPTION_COMPUTATION]: function (fields) {
+    this.emit('TICK_OPTION_COMPUTATION', fields);
+    handler_TICK_OPTION_COMPUTATION(fields);
+  },
+  [IncomeMessageType.TICK_GENERIC]: function (fields) {
+    this.emit('TICK_GENERIC', fields);
+    handler_TICK_GENERIC(fields);
+  },
+  [IncomeMessageType.TICK_STRING]: function (fields) {
+    this.emit('TICK_STRING', fields);
+    handler_TICK_STRING(fields);
+  },
 
 
 
@@ -431,12 +453,14 @@ export default {
 
 
   [IncomeMessageType.CURRENT_TIME]: function (fields) {
+    this.emit('CURRENT_TIME', fields);
     this.messageTypeResolve(IncomeMessageType.CURRENT_TIME, parseInt(fields[2]));
   },
 
 
 
   [IncomeMessageType.REAL_TIME_BARS]: function (fields) {
+    this.emit('REAL_TIME_BARS', fields);
     fields.shift();
     parseInt(fields.shift());
     let requestId = parseInt(fields.shift());
@@ -465,12 +489,14 @@ export default {
 
 
   [IncomeMessageType.CONTRACT_DATA_END]: function (fields) {
+    this.emit('CONTRACT_DATA_END', fields);
     this.requestIdResolve(fields[2], this.requestIdStorageArray(fields[2]));
   },
 
 
 
   [IncomeMessageType.OPEN_ORDER_END]: function (fields) {
+    this.emit('OPEN_ORDER_END', fields);
     this.messageTypeResolve(IncomeMessageType.OPEN_ORDER_END,
       this.messageTypeStorageArray(IncomeMessageType.OPEN_ORDER_END));
   },
@@ -492,8 +518,14 @@ export default {
 
 
 
-  [IncomeMessageType.TICK_SNAPSHOT_END]: handler_TICK_SNAPSHOT_END,
-  [IncomeMessageType.MARKET_DATA_TYPE]: handler_MARKET_DATA_TYPE,
+  [IncomeMessageType.TICK_SNAPSHOT_END]: function (fields) {
+    this.emit('TICK_SNAPSHOT_END', fields);
+    handler_TICK_SNAPSHOT_END(fields);
+  },
+  [IncomeMessageType.MARKET_DATA_TYPE]: function (fields) {
+    this.emit('MARKET_DATA_TYPE', fields);
+    handler_MARKET_DATA_TYPE(fields);
+  },
 
 
 
@@ -505,6 +537,7 @@ export default {
 
 
   [IncomeMessageType.POSITION_DATA]: function (fields) {
+    this.emit('POSITION_DATA', fields);
     fields.shift();
     let version = parseInt(fields.shift());
 
@@ -551,6 +584,7 @@ export default {
 
 
   [IncomeMessageType.POSITION_END]: function (fields) {
+    this.emit('POSITION_END', fields);
     this.messageTypeResolve(IncomeMessageType.POSITION_END,
       this.messageTypeStorageMap(IncomeMessageType.POSITION_END));
   },
@@ -609,6 +643,7 @@ export default {
 
 
   [IncomeMessageType.SECURITY_DEFINITION_OPTION_PARAMETER]: function (fields) {
+    this.emit('SECURITY_DEFINITION_OPTION_PARAMETER', fields);
     fields.shift();
 
     let requestId = parseInt(fields.shift());
@@ -645,6 +680,7 @@ export default {
 
 
   [IncomeMessageType.SECURITY_DEFINITION_OPTION_PARAMETER_END]: function (fields) {
+    this.emit('SECURITY_DEFINITION_OPTION_PARAMETER_END', fields);
     fields.shift();
     let requestId = parseInt(fields.shift());
     this.requestIdResolve(requestId, this.requestIdStorageArray(requestId));
@@ -671,7 +707,10 @@ export default {
 
 
 
-  [IncomeMessageType.TICK_REQ_PARAMS]: handler_TICK_REQ_PARAMS,
+  [IncomeMessageType.TICK_REQ_PARAMS]: function (fields) {
+    this.emit('TICK_REQ_PARAMS', fields);
+    handler_TICK_REQ_PARAMS(fields);
+  },
 
 
 
@@ -683,6 +722,7 @@ export default {
 
 
   [IncomeMessageType.HEAD_TIMESTAMP]: function (fields) {
+    this.emit('HEAD_TIMESTAMP', fields);
     fields.shift();
     let requestId = parseInt(fields.shift());
     let headTimestamp = fields.shift();
@@ -739,6 +779,7 @@ export default {
 
 
   [IncomeMessageType.HISTORICAL_TICKS]: function (fields) {
+    this.emit('HISTORICAL_TICKS', fields);
     fields.shift();
     let requestId = parseInt(fields.shift());
     let tickCount = parseInt(fields.shift());
@@ -764,6 +805,7 @@ export default {
 
 
   [IncomeMessageType.HISTORICAL_TICKS_BID_ASK]: function (fields) {
+    this.emit('HISTORICAL_TICKS_BID_ASK', fields);
     fields.shift();
     let requestId = parseInt(fields.shift());
     let tickCount = parseInt(fields.shift());
@@ -796,6 +838,7 @@ export default {
 
 
   [IncomeMessageType.HISTORICAL_TICKS_LAST]: function (fields) {
+    this.emit('HISTORICAL_TICKS_LAST', fields);
     fields.shift();
     let requestId = parseInt(fields.shift());
     let tickCount = parseInt(fields.shift());
@@ -831,8 +874,10 @@ export default {
 
 
 
-  [IncomeMessageType.TICK_BY_TICK]: handler_TICK_BY_TICK,
-
+  [IncomeMessageType.TICK_BY_TICK]: function (fields) {
+    this.emit('TICK_BY_TICK', fields);
+    handler_TICK_BY_TICK(fields);
+  },
 
 
   // HandleInfo(proc=processOrderBoundMsg),
@@ -842,11 +887,16 @@ export default {
 
 
 
-  [IncomeMessageType.COMPLETED_ORDER]: handler_COMPLETED_ORDER,
+  [IncomeMessageType.COMPLETED_ORDER]: function (fields) {
+    console.log(fields);
+    this.emit('COMPLETED_ORDER', fields);
+    handler_COMPLETED_ORDER(fields);
+  },
 
 
 
   [IncomeMessageType.COMPLETED_ORDERS_END]: function (fields) {
+    this.emit('COMPLETED_ORDERS_END', fields);
     this.messageTypeResolve(IncomeMessageType.COMPLETED_ORDERS_END,
       this.messageTypeStorageArray(IncomeMessageType.COMPLETED_ORDERS_END));
   },
@@ -854,6 +904,7 @@ export default {
 
 
   [IncomeMessageType._SERVER_VERSION]: function (fields) {
+    this.emit('_SERVER_VERSION', fields);
     const serverVersion = parseInt(fields[0]);
     debuglog('Logged on to server version ' + serverVersion);
     this.messageTypeResolve(IncomeMessageType._SERVER_VERSION, serverVersion);

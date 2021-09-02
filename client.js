@@ -613,13 +613,11 @@ class Client {
     order:Order - This structure contains the details of tradedhe order.
         Note: Each client MUST connect with a unique clientId.*/
     
-    // assert(!p.orderId);
     if (!p.orderId) {
       // support modify order by orderId
       p.orderId = await this._allocateRequestId();
     }
 
-    p.orderId = await this._allocateRequestId();
     p.order.clientId = this._clientId;
 
     await this._sendFieldsetRateLimited(
@@ -2388,7 +2386,7 @@ class Client {
 
 
 
-  async reqCompletedOrders(p) {
+  async reqCompletedOrders() {
     await this._sendFieldsetExpirable([
       OutcomeMessageType.REQ_COMPLETED_ORDERS,
       1 /* VERSION */

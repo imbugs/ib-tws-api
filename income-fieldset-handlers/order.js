@@ -81,7 +81,7 @@ class OrderDecoder {
     } else {
       this.order.totalQuantity = this._shiftInt();
     }
-}
+  }
 
 
 
@@ -238,7 +238,7 @@ class OrderDecoder {
     } else if (this.version >= 23) {
       this.order.exemptCode = this._shiftInt();
     }
-}
+  }
 
 
 
@@ -385,17 +385,17 @@ class OrderDecoder {
         this.contract.comboLegs = [];
 
         for (let n = 0; n < comboLegsCount; n++) {
-            const comboLeg = {};
-            comboLeg.conId = this._shiftInt();
-            comboLeg.ratio = this._shiftInt();
-            comboLeg.action = this._shift();
-            comboLeg.exchange = this._shift();
-            comboLeg.openClose = this._shiftInt();
-            comboLeg.shortSaleSlot = this._shiftInt();
-            comboLeg.designatedLocation = this._shift();
-            comboLeg.exemptCode = this._shiftInt();
-            this.contract.comboLegs.push(comboLeg);
-          }
+          const comboLeg = {};
+          comboLeg.conId = this._shiftInt();
+          comboLeg.ratio = this._shiftInt();
+          comboLeg.action = this._shift();
+          comboLeg.exchange = this._shift();
+          comboLeg.openClose = this._shiftInt();
+          comboLeg.shortSaleSlot = this._shiftInt();
+          comboLeg.designatedLocation = this._shift();
+          comboLeg.exemptCode = this._shiftInt();
+          this.contract.comboLegs.push(comboLeg);
+        }
 
         let orderComboLegsCount = this._shiftInt();
         if (orderComboLegsCount > 0) {
@@ -441,7 +441,7 @@ class OrderDecoder {
     this.order.scalePriceIncrement = this._shiftFloat();
 
     if (this.version >= 28 && this.order.scalePriceIncrement != null &&
-        this.order.scalePriceIncrement > 0.0) {
+      this.order.scalePriceIncrement > 0.0) {
       this.order.scalePriceAdjustValue = this._shiftFloat();
       this.order.scalePriceAdjustInterval = this._shiftInt();
       this.order.scaleProfitOffset = this._shiftFloat();
@@ -833,6 +833,8 @@ export function handler_OPEN_ORDER(fields) {
 
 
 export function handler_COMPLETED_ORDER(fields) {
+  console.log(fields);
+  
   fields.shift();
   fields.shift();
 
