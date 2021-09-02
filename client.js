@@ -612,7 +612,12 @@ class Client {
         contract which is being traded.
     order:Order - This structure contains the details of tradedhe order.
         Note: Each client MUST connect with a unique clientId.*/
-    assert(!p.orderId);
+    
+    // assert(!p.orderId);
+    if (!p.orderId) {
+      // support modify order by orderId
+      p.orderId = await this._allocateRequestId();
+    }
 
     p.orderId = await this._allocateRequestId();
     p.order.clientId = this._clientId;
@@ -2384,20 +2389,13 @@ class Client {
 
 
   async reqCompletedOrders(p) {
-    throw new Error('not implemented yet');
-    /*
-    apiOnly:bool
+    await this._sendFieldsetExpirable([
+      OutcomeMessageType.REQ_COMPLETED_ORDERS,
+      1 /* VERSION */
+    ]);
 
-    """request the completed orders. If apiOnly parameter
-    is true, then only completed orders placed from API are requested.
-    Each completed order will be fed back through the
-    completedOrder() function on the EWrapper."""
-
-    msg = flds.push(OutcomeMessageType.REQ_COMPLETED_ORDERS) \
-        + flds.push(apiOnly)
-
-    this._sendFieldsetRateLimited(msg)
-    */
+    return await this._incomeHandler.awaitMessageType(
+      IncomeMessageType.COMPLETED_ORDERS_END);
   }
 }
 

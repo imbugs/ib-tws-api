@@ -27,7 +27,7 @@ import {
 //
 
 function todo(name) {
-  return function(fields) {
+  return function (fields) {
     console.log(name + ' message handler is not implemented yet');
     console.log(fields);
   };
@@ -46,7 +46,7 @@ export default {
 
 
 
-  [IncomeMessageType.ORDER_STATUS]: function(fields) {
+  [IncomeMessageType.ORDER_STATUS]: function (fields) {
     fields.shift();
     let orderId = parseInt(fields.shift());
     let status = fields.shift();
@@ -85,7 +85,7 @@ export default {
 
 
 
-  [IncomeMessageType.ERR_MSG]: function(fields) {
+  [IncomeMessageType.ERR_MSG]: function (fields) {
     let requestId = fields[2];
 
     if (requestId > 0) {
@@ -116,13 +116,13 @@ export default {
 
 
 
-  [IncomeMessageType.NEXT_VALID_ID]: function(fields) {
+  [IncomeMessageType.NEXT_VALID_ID]: function (fields) {
     this.messageTypeResolve(IncomeMessageType.NEXT_VALID_ID, parseInt(fields[2]));
   },
 
 
 
-  [IncomeMessageType.CONTRACT_DATA]: function(fields) {
+  [IncomeMessageType.CONTRACT_DATA]: function (fields) {
     fields.shift();
     let version = parseInt(fields.shift());
 
@@ -223,7 +223,46 @@ export default {
 
 
   // HandleInfo(proc=processExecutionDataMsg),
-  [IncomeMessageType.EXECUTION_DATA]: todo('EXECUTION_DATA'),
+  [IncomeMessageType.EXECUTION_DATA]: function (fields) {
+    fields.shift();
+    fields.shift();
+    fields.shift();
+    fields.shift();
+
+    let symbol = fields.shift();
+    let secType = fields.shift();
+
+    fields.shift();
+    fields.shift();
+    fields.shift();
+    fields.shift();
+    fields.shift();
+
+    let currency = fields.shift();
+
+    fields.shift();
+    fields.shift();
+    fields.shift();
+
+    let datetime = fields.shift();
+
+    fields.shift();
+    fields.shift();
+
+    let action = fields.shift();
+    let filled = parseFloat(fields.shift());
+    let fillPrice = parseFloat(fields.shift());
+
+    this.emit('EXECUTION_DATA', {
+      symbol,
+      secType,
+      currency,
+      datetime,
+      action,
+      filled,
+      fillPrice,
+    });
+  },
   // HandleInfo(wrap=EWrapper.updateMktDepth),
   [IncomeMessageType.MARKET_DEPTH]: todo('MARKET_DEPTH'),
   // HandleInfo(proc=processMarketDepthL2Msg),
@@ -233,7 +272,7 @@ export default {
 
 
 
-  [IncomeMessageType.MANAGED_ACCTS]: function(fields) {
+  [IncomeMessageType.MANAGED_ACCTS]: function (fields) {
     this.messageTypeResolve(IncomeMessageType.MANAGED_ACCTS, fields[2].split(','));
   },
 
@@ -244,7 +283,7 @@ export default {
 
 
 
-  [IncomeMessageType.HISTORICAL_DATA]: function(fields) {
+  [IncomeMessageType.HISTORICAL_DATA]: function (fields) {
     fields.shift();
 
     if (this.serverVersion < ServerVersion.MIN_SERVER_VER_SYNT_REALTIME_BARS) {
@@ -286,7 +325,7 @@ export default {
 
 
 
-  [IncomeMessageType.HISTORICAL_DATA_UPDATE]: function(fields) {
+  [IncomeMessageType.HISTORICAL_DATA_UPDATE]: function (fields) {
     fields.shift();
     let requestId = parseInt(fields.shift());
     let bar = {
@@ -311,13 +350,13 @@ export default {
 
 
   // HandleInfo(wrap=EWrapper.scannerParameters),
-  [IncomeMessageType.SCANNER_PARAMETERS]: function(fields) {
+  [IncomeMessageType.SCANNER_PARAMETERS]: function (fields) {
     this.messageTypeResolve(IncomeMessageType.SCANNER_PARAMETERS, fields[2]);
   },
 
 
 
-  [IncomeMessageType.SCANNER_DATA]: function(fields) {
+  [IncomeMessageType.SCANNER_DATA]: function (fields) {
     fields.shift();
     fields.shift();
     let requestId = parseInt(fields.shift());
@@ -367,13 +406,13 @@ export default {
 
 
 
-  [IncomeMessageType.CURRENT_TIME]: function(fields) {
+  [IncomeMessageType.CURRENT_TIME]: function (fields) {
     this.messageTypeResolve(IncomeMessageType.CURRENT_TIME, parseInt(fields[2]));
   },
 
 
 
-  [IncomeMessageType.REAL_TIME_BARS]: function(fields) {
+  [IncomeMessageType.REAL_TIME_BARS]: function (fields) {
     fields.shift();
     parseInt(fields.shift());
     let requestId = parseInt(fields.shift());
@@ -399,13 +438,13 @@ export default {
 
 
 
-  [IncomeMessageType.CONTRACT_DATA_END]: function(fields) {
+  [IncomeMessageType.CONTRACT_DATA_END]: function (fields) {
     this.requestIdResolve(fields[2], this.requestIdStorageArray(fields[2]));
   },
 
 
 
-  [IncomeMessageType.OPEN_ORDER_END]: function(fields) {
+  [IncomeMessageType.OPEN_ORDER_END]: function (fields) {
     this.messageTypeResolve(IncomeMessageType.OPEN_ORDER_END,
       this.messageTypeStorageArray(IncomeMessageType.OPEN_ORDER_END));
   },
@@ -431,7 +470,7 @@ export default {
 
 
 
-  [IncomeMessageType.POSITION_DATA]: function(fields) {
+  [IncomeMessageType.POSITION_DATA]: function (fields) {
     fields.shift();
     let version = parseInt(fields.shift());
 
@@ -477,7 +516,7 @@ export default {
 
 
 
-  [IncomeMessageType.POSITION_END]: function(fields) {
+  [IncomeMessageType.POSITION_END]: function (fields) {
     this.messageTypeResolve(IncomeMessageType.POSITION_END,
       this.messageTypeStorageMap(IncomeMessageType.POSITION_END));
   },
@@ -511,7 +550,7 @@ export default {
 
 
 
-  [IncomeMessageType.SECURITY_DEFINITION_OPTION_PARAMETER]: function(fields) {
+  [IncomeMessageType.SECURITY_DEFINITION_OPTION_PARAMETER]: function (fields) {
     fields.shift();
 
     let requestId = parseInt(fields.shift());
@@ -547,7 +586,7 @@ export default {
 
 
 
-  [IncomeMessageType.SECURITY_DEFINITION_OPTION_PARAMETER_END]: function(fields) {
+  [IncomeMessageType.SECURITY_DEFINITION_OPTION_PARAMETER_END]: function (fields) {
     fields.shift();
     let requestId = parseInt(fields.shift());
     this.requestIdResolve(requestId, this.requestIdStorageArray(requestId));
@@ -575,7 +614,7 @@ export default {
 
 
 
-  [IncomeMessageType.HEAD_TIMESTAMP]: function(fields) {
+  [IncomeMessageType.HEAD_TIMESTAMP]: function (fields) {
     fields.shift();
     let requestId = parseInt(fields.shift());
     let headTimestamp = fields.shift();
@@ -609,7 +648,7 @@ export default {
 
 
 
-  [IncomeMessageType.HISTORICAL_TICKS]: function(fields) {
+  [IncomeMessageType.HISTORICAL_TICKS]: function (fields) {
     fields.shift();
     let requestId = parseInt(fields.shift());
     let tickCount = parseInt(fields.shift());
@@ -634,7 +673,7 @@ export default {
 
 
 
-  [IncomeMessageType.HISTORICAL_TICKS_BID_ASK]: function(fields) {
+  [IncomeMessageType.HISTORICAL_TICKS_BID_ASK]: function (fields) {
     fields.shift();
     let requestId = parseInt(fields.shift());
     let tickCount = parseInt(fields.shift());
@@ -666,7 +705,7 @@ export default {
 
 
 
-  [IncomeMessageType.HISTORICAL_TICKS_LAST]: function(fields) {
+  [IncomeMessageType.HISTORICAL_TICKS_LAST]: function (fields) {
     fields.shift();
     let requestId = parseInt(fields.shift());
     let tickCount = parseInt(fields.shift());
@@ -715,14 +754,14 @@ export default {
 
 
 
-  [IncomeMessageType.COMPLETED_ORDERS_END]: function(fields) {
+  [IncomeMessageType.COMPLETED_ORDERS_END]: function (fields) {
     this.messageTypeResolve(IncomeMessageType.COMPLETED_ORDERS_END,
       this.messageTypeStorageArray(IncomeMessageType.COMPLETED_ORDERS_END));
   },
 
 
 
-  [IncomeMessageType._SERVER_VERSION]: function(fields) {
+  [IncomeMessageType._SERVER_VERSION]: function (fields) {
     const serverVersion = parseInt(fields[0]);
     debuglog('Logged on to server version ' + serverVersion);
     this.messageTypeResolve(IncomeMessageType._SERVER_VERSION, serverVersion);

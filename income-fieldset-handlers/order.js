@@ -836,7 +836,7 @@ export function handler_COMPLETED_ORDER(fields) {
   fields.shift();
   fields.shift();
 
-  d = new OrderDecoder(10000, this.serverVersion, fields);
+  let d = new OrderDecoder(10000, this.serverVersion, fields);
 
   // read contract fields
   d.decodeContractFields();
