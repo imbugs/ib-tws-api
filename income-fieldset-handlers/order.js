@@ -833,15 +833,13 @@ export function handler_OPEN_ORDER(fields) {
 
 
 export function handler_COMPLETED_ORDER(fields) {
-  console.log(fields);
-  
-  fields.shift();
   fields.shift();
 
   let d = new OrderDecoder(10000, this.serverVersion, fields);
 
   // read contract fields
   d.decodeContractFields();
+
 
   // read order fields
   d.decodeAction();
@@ -886,6 +884,9 @@ export function handler_COMPLETED_ORDER(fields) {
   d.decodeDeltaNeutral();
   d.decodeAlgoParams();
   d.decodeSolicited();
+  // FIX: offset
+  fields.shift();
+  fields.shift();
   d.decodeOrderStatus();
   d.decodeVolRandomizeFlags();
   d.decodePegToBenchParams();

@@ -43,12 +43,12 @@ function todo(name) {
 export default {
   [IncomeMessageType.TICK_PRICE]: function (fields) {
     this.emit('TICK_PRICE', fields);
-    handler_TICK_PRICE(fields);
+    handler_TICK_PRICE.bind(this)(fields);
   },
 
   [IncomeMessageType.TICK_SIZE]: function (fields) {
     this.emit('TICK_SIZE', fields);
-    handler_TICK_SIZE(fields);
+    handler_TICK_SIZE.bind(this)(fields);
   },
 
   [IncomeMessageType.ORDER_STATUS]: function (fields) {
@@ -113,7 +113,7 @@ export default {
 
   [IncomeMessageType.OPEN_ORDER]: function (fields) {
     this.emit('OPEN_ORDER', fields);
-    handler_OPEN_ORDER(fields);
+    handler_OPEN_ORDER.bind(this)(fields);
   },
 
 
@@ -432,15 +432,15 @@ export default {
   // HandleInfo(proc=processTickOptionComputationMsg
   [IncomeMessageType.TICK_OPTION_COMPUTATION]: function (fields) {
     this.emit('TICK_OPTION_COMPUTATION', fields);
-    handler_TICK_OPTION_COMPUTATION(fields);
+    handler_TICK_OPTION_COMPUTATION.bind(this)(fields);
   },
   [IncomeMessageType.TICK_GENERIC]: function (fields) {
     this.emit('TICK_GENERIC', fields);
-    handler_TICK_GENERIC(fields);
+    handler_TICK_GENERIC.bind(this)(fields);
   },
   [IncomeMessageType.TICK_STRING]: function (fields) {
     this.emit('TICK_STRING', fields);
-    handler_TICK_STRING(fields);
+    handler_TICK_STRING.bind(this)(fields);
   },
 
 
@@ -520,11 +520,11 @@ export default {
 
   [IncomeMessageType.TICK_SNAPSHOT_END]: function (fields) {
     this.emit('TICK_SNAPSHOT_END', fields);
-    handler_TICK_SNAPSHOT_END(fields);
+    handler_TICK_SNAPSHOT_END.bind(this)(fields);
   },
   [IncomeMessageType.MARKET_DATA_TYPE]: function (fields) {
     this.emit('MARKET_DATA_TYPE', fields);
-    handler_MARKET_DATA_TYPE(fields);
+    handler_MARKET_DATA_TYPE.bind(this)(fields);
   },
 
 
@@ -709,7 +709,7 @@ export default {
 
   [IncomeMessageType.TICK_REQ_PARAMS]: function (fields) {
     this.emit('TICK_REQ_PARAMS', fields);
-    handler_TICK_REQ_PARAMS(fields);
+    handler_TICK_REQ_PARAMS.bind(this)(fields);
   },
 
 
@@ -876,7 +876,7 @@ export default {
 
   [IncomeMessageType.TICK_BY_TICK]: function (fields) {
     this.emit('TICK_BY_TICK', fields);
-    handler_TICK_BY_TICK(fields);
+    handler_TICK_BY_TICK.bind(this)(fields);
   },
 
 
@@ -888,9 +888,8 @@ export default {
 
 
   [IncomeMessageType.COMPLETED_ORDER]: function (fields) {
-    console.log(fields);
     this.emit('COMPLETED_ORDER', fields);
-    handler_COMPLETED_ORDER(fields);
+    handler_COMPLETED_ORDER.bind(this)(fields);
   },
 
 
