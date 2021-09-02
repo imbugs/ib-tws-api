@@ -884,13 +884,13 @@ export function handler_COMPLETED_ORDER(fields) {
   d.decodeDeltaNeutral();
   d.decodeAlgoParams();
   d.decodeSolicited();
-  // FIX: offset
+  // FIX 位置对齐
   fields.shift();
   fields.shift();
   d.decodeOrderStatus();
-  d.decodeVolRandomizeFlags();
-  d.decodePegToBenchParams();
-  d.decodeConditions();
+  fields.shift();
+  fields.shift();
+  fields.shift();
   d.decodeStopPriceAndLmtPriceOffset();
   d.decodeCashQty();
   d.decodeDontUseAutoPriceForHedge();
