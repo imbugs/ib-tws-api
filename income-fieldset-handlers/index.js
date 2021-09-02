@@ -47,6 +47,8 @@ export default {
 
 
   [IncomeMessageType.ORDER_STATUS]: function (fields) {
+    this.emit('ORDER_STATUS', fields);
+
     fields.shift();
     let orderId = parseInt(fields.shift());
     let status = fields.shift();
@@ -108,11 +110,17 @@ export default {
 
 
   // HandleInfo(wrap=EWrapper.updateAccountValue),
-  [IncomeMessageType.ACCT_VALUE]: todo('ACCT_VALUE'),
+  [IncomeMessageType.ACCT_VALUE]: function (fields) {
+    this.emit('ACCT_VALUE', fields);
+  },
   // HandleInfo(proc=processPortfolioValueMsg),
-  [IncomeMessageType.PORTFOLIO_VALUE]: todo('PORTFOLIO_VALUE'),
+  [IncomeMessageType.PORTFOLIO_VALUE]: function (fields) {
+    this.emit('PORTFOLIO_VALUE', fields);
+  },
   // HandleInfo(wrap=EWrapper.updateAccountTime),
-  [IncomeMessageType.ACCT_UPDATE_TIME]: todo('ACCT_UPDATE_TIME'),
+  [IncomeMessageType.ACCT_UPDATE_TIME]: function (fields) {
+    this.emit('ACCT_UPDATE_TIME', fields);
+  },
 
 
 
@@ -224,6 +232,8 @@ export default {
 
   // HandleInfo(proc=processExecutionDataMsg),
   [IncomeMessageType.EXECUTION_DATA]: function (fields) {
+    this.emit('EXECUTION_DATA', fields);
+
     fields.shift();
     fields.shift();
     fields.shift();
@@ -253,7 +263,7 @@ export default {
     let filled = parseFloat(fields.shift());
     let fillPrice = parseFloat(fields.shift());
 
-    this.emit('EXECUTION_DATA', {
+    this.emit('executionData', {
       symbol,
       secType,
       currency,
@@ -261,14 +271,20 @@ export default {
       action,
       filled,
       fillPrice,
-    });
+    })
   },
   // HandleInfo(wrap=EWrapper.updateMktDepth),
-  [IncomeMessageType.MARKET_DEPTH]: todo('MARKET_DEPTH'),
+  [IncomeMessageType.MARKET_DEPTH]: function (fields) {
+    this.emit('MARKET_DEPTH', fields);
+  },
   // HandleInfo(proc=processMarketDepthL2Msg),
-  [IncomeMessageType.MARKET_DEPTH_L2]: todo('MARKET_DEPTH_L2'),
+  [IncomeMessageType.MARKET_DEPTH_L2]: function (fields) {
+    this.emit('MARKET_DEPTH_L2', fields);
+  },
   // HandleInfo(wrap=EWrapper.updateNewsBulletin),
-  [IncomeMessageType.NEWS_BULLETINS]: todo('NEWS_BULLETINS'),
+  [IncomeMessageType.NEWS_BULLETINS]: function (fields) {
+    this.emit('NEWS_BULLETINS', fields);
+  },
 
 
 
@@ -279,7 +295,9 @@ export default {
 
 
   // HandleInfo(wrap=EWrapper.receiveFA),
-  [IncomeMessageType.RECEIVE_FA]: todo('RECEIVE_FA'),
+  [IncomeMessageType.RECEIVE_FA]: function (fields) {
+    this.emit('RECEIVE_FA', fields);
+  },
 
 
 
@@ -345,7 +363,9 @@ export default {
 
 
   // HandleInfo(proc=processBondContractDataMsg),
-  [IncomeMessageType.BOND_CONTRACT_DATA]: todo('BOND_CONTRACT_DATA'),
+  [IncomeMessageType.BOND_CONTRACT_DATA]: function (fields) {
+    this.emit('BOND_CONTRACT_DATA', fields);
+  },
 
 
 
@@ -357,6 +377,8 @@ export default {
 
 
   [IncomeMessageType.SCANNER_DATA]: function (fields) {
+    this.emit('SCANNER_DATA', fields);
+
     fields.shift();
     fields.shift();
     let requestId = parseInt(fields.shift());
@@ -402,7 +424,9 @@ export default {
 
 
   // HandleInfo(wrap=EWrapper.tickEFP)
-  [IncomeMessageType.TICK_EFP]: todo('TICK_EFP'),
+  [IncomeMessageType.TICK_EFP]: function (fields) {
+    this.emit('TICK_EFP', fields);
+  },
 
 
 
@@ -434,7 +458,9 @@ export default {
 
 
   // HandleInfo(wrap=EWrapper.fundamentalData),
-  [IncomeMessageType.FUNDAMENTAL_DATA]: todo('FUNDAMENTAL_DATA'),
+  [IncomeMessageType.FUNDAMENTAL_DATA]: function (fields) {
+    this.emit('FUNDAMENTAL_DATA', fields);
+  },
 
 
 
@@ -452,11 +478,17 @@ export default {
 
 
   // HandleInfo(wrap=EWrapper.accountDownloadEnd),
-  [IncomeMessageType.ACCT_DOWNLOAD_END]: todo('ACCT_DOWNLOAD_END'),
+  [IncomeMessageType.ACCT_DOWNLOAD_END]: function (fields) {
+    this.emit('ACCT_DOWNLOAD_END', fields);
+  },
   // HandleInfo(wrap=EWrapper.execDetailsEnd),
-  [IncomeMessageType.EXECUTION_DATA_END]: todo('EXECUTION_DATA_END'),
+  [IncomeMessageType.EXECUTION_DATA_END]: function (fields) {
+    this.emit('EXECUTION_DATA_END', fields);
+  },
   // HandleInfo(proc=processDeltaNeutralValidationMsg),
-  [IncomeMessageType.DELTA_NEUTRAL_VALIDATION]: todo('DELTA_NEUTRAL_VALIDATION'),
+  [IncomeMessageType.DELTA_NEUTRAL_VALIDATION]: function (fields) {
+    this.emit('DELTA_NEUTRAL_VALIDATION', fields);
+  },
 
 
 
@@ -466,7 +498,9 @@ export default {
 
 
   // HandleInfo(proc=processCommissionReportMsg),
-  [IncomeMessageType.COMMISSION_REPORT]: todo('COMMISSION_REPORT'),
+  [IncomeMessageType.COMMISSION_REPORT]: function (fields) {
+    this.emit('COMMISSION_REPORT', fields);
+  },
 
 
 
@@ -524,29 +558,53 @@ export default {
 
 
   // HandleInfo(wrap=EWrapper.accountSummary),
-  [IncomeMessageType.ACCOUNT_SUMMARY]: todo('ACCOUNT_SUMMARY'),
+  [IncomeMessageType.ACCOUNT_SUMMARY]: function (fields) {
+    this.emit('ACCOUNT_SUMMARY', fields);
+  },
   // HandleInfo(wrap=EWrapper.accountSummaryEnd),
-  [IncomeMessageType.ACCOUNT_SUMMARY_END]: todo('ACCOUNT_SUMMARY_END'),
+  [IncomeMessageType.ACCOUNT_SUMMARY_END]: function (fields) {
+    this.emit('ACCOUNT_SUMMARY_END', fields);
+  },
   // HandleInfo(wrap=EWrapper.verifyMessageAPI),
-  [IncomeMessageType.VERIFY_MESSAGE_API]: todo('VERIFY_MESSAGE_API'),
+  [IncomeMessageType.VERIFY_MESSAGE_API]: function (fields) {
+    this.emit('VERIFY_MESSAGE_API', fields);
+  },
   // HandleInfo(wrap=EWrapper.verifyCompleted),
-  [IncomeMessageType.VERIFY_COMPLETED]: todo('VERIFY_COMPLETED'),
+  [IncomeMessageType.VERIFY_COMPLETED]: function (fields) {
+    this.emit('VERIFY_COMPLETED', fields);
+  },
   // HandleInfo(wrap=EWrapper.displayGroupList),
-  [IncomeMessageType.DISPLAY_GROUP_LIST]: todo('DISPLAY_GROUP_LIST'),
+  [IncomeMessageType.DISPLAY_GROUP_LIST]: function (fields) {
+    this.emit('DISPLAY_GROUP_LIST', fields);
+  },
   // HandleInfo(wrap=EWrapper.displayGroupUpdated),
-  [IncomeMessageType.DISPLAY_GROUP_UPDATED]: todo('DISPLAY_GROUP_UPDATED'),
+  [IncomeMessageType.DISPLAY_GROUP_UPDATED]: function (fields) {
+    this.emit('DISPLAY_GROUP_UPDATED', fields);
+  },
   // HandleInfo(wrap=EWrapper.verifyAndAuthMessageAPI),
-  [IncomeMessageType.VERIFY_AND_AUTH_MESSAGE_API]: todo('VERIFY_AND_AUTH_MESSAGE_API'),
+  [IncomeMessageType.VERIFY_AND_AUTH_MESSAGE_API]: function (fields) {
+    this.emit('VERIFY_AND_AUTH_MESSAGE_API', fields);
+  },
   // HandleInfo(wrap=EWrapper.verifyAndAuthCompleted),
-  [IncomeMessageType.VERIFY_AND_AUTH_COMPLETED]: todo('VERIFY_AND_AUTH_COMPLETED'),
+  [IncomeMessageType.VERIFY_AND_AUTH_COMPLETED]: function (fields) {
+    this.emit('VERIFY_AND_AUTH_COMPLETED', fields);
+  },
   // HandleInfo(proc=processPositionMultiMsg),
-  [IncomeMessageType.POSITION_MULTI]: todo('POSITION_MULTI'),
+  [IncomeMessageType.POSITION_MULTI]: function (fields) {
+    this.emit('POSITION_MULTI', fields);
+  },
   // HandleInfo(wrap=EWrapper.positionMultiEnd),
-  [IncomeMessageType.POSITION_MULTI_END]: todo('POSITION_MULTI_END'),
+  [IncomeMessageType.POSITION_MULTI_END]: function (fields) {
+    this.emit('POSITION_MULTI_END', fields);
+  },
   // HandleInfo(wrap=EWrapper.accountUpdateMulti),
-  [IncomeMessageType.ACCOUNT_UPDATE_MULTI]: todo('ACCOUNT_UPDATE_MULTI'),
+  [IncomeMessageType.ACCOUNT_UPDATE_MULTI]: function (fields) {
+    this.emit('ACCOUNT_UPDATE_MULTI', fields);
+  },
   // HandleInfo(wrap=EWrapper.accountUpdateMultiEnd),
-  [IncomeMessageType.ACCOUNT_UPDATE_MULTI_END]: todo('ACCOUNT_UPDATE_MULTI_END'),
+  [IncomeMessageType.ACCOUNT_UPDATE_MULTI_END]: function (fields) {
+    this.emit('ACCOUNT_UPDATE_MULTI_END', fields);
+  },
 
 
 
@@ -595,13 +653,21 @@ export default {
 
 
   // HandleInfo(proc=processSoftDollarTiersMsg),
-  [IncomeMessageType.SOFT_DOLLAR_TIERS]: todo('SOFT_DOLLAR_TIERS'),
+  [IncomeMessageType.SOFT_DOLLAR_TIERS]: function (fields) {
+    this.emit('SOFT_DOLLAR_TIERS', fields);
+  },
   // HandleInfo(proc=processFamilyCodesMsg),
-  [IncomeMessageType.FAMILY_CODES]: todo('FAMILY_CODES'),
+  [IncomeMessageType.FAMILY_CODES]: function (fields) {
+    this.emit('FAMILY_CODES', fields);
+  },
   // HandleInfo(proc=processSymbolSamplesMsg),
-  [IncomeMessageType.SYMBOL_SAMPLES]: todo('SYMBOL_SAMPLES'),
+  [IncomeMessageType.SYMBOL_SAMPLES]: function (fields) {
+    this.emit('SYMBOL_SAMPLES', fields);
+  },
   // HandleInfo(proc=processSmartComponents),
-  [IncomeMessageType.SMART_COMPONENTS]: todo('SMART_COMPONENTS'),
+  [IncomeMessageType.SMART_COMPONENTS]: function (fields) {
+    this.emit('SMART_COMPONENTS', fields);
+  },
 
 
 
@@ -610,7 +676,9 @@ export default {
 
 
   // HandleInfo(proc=processMktDepthExchanges),
-  [IncomeMessageType.MKT_DEPTH_EXCHANGES]: todo('MKT_DEPTH_EXCHANGES'),
+  [IncomeMessageType.MKT_DEPTH_EXCHANGES]: function (fields) {
+    this.emit('MKT_DEPTH_EXCHANGES', fields);
+  },
 
 
 
@@ -624,27 +692,49 @@ export default {
 
 
   // HandleInfo(proc=processTickNews),
-  [IncomeMessageType.TICK_NEWS]: todo('TICK_NEWS'),
+  [IncomeMessageType.TICK_NEWS]: function (fields) {
+    this.emit('TICK_NEWS', fields);
+  },
   // HandleInfo(proc=processNewsProviders),
-  [IncomeMessageType.NEWS_PROVIDERS]: todo('NEWS_PROVIDERS'),
+  [IncomeMessageType.NEWS_PROVIDERS]: function (fields) {
+    this.emit('NEWS_PROVIDERS', fields);
+  },
   // HandleInfo(proc=processNewsArticle),
-  [IncomeMessageType.NEWS_ARTICLE]: todo('NEWS_ARTICLE'),
+  [IncomeMessageType.NEWS_ARTICLE]: function (fields) {
+    this.emit('NEWS_ARTICLE', fields);
+  },
   // HandleInfo(proc=processHistoricalNews),
-  [IncomeMessageType.HISTORICAL_NEWS]: todo('HISTORICAL_NEWS'),
+  [IncomeMessageType.HISTORICAL_NEWS]: function (fields) {
+    this.emit('HISTORICAL_NEWS', fields);
+  },
   // HandleInfo(proc=processHistoricalNewsEnd),
-  [IncomeMessageType.HISTORICAL_NEWS_END]: todo('HISTORICAL_NEWS_END'),
+  [IncomeMessageType.HISTORICAL_NEWS_END]: function (fields) {
+    this.emit('HISTORICAL_NEWS_END', fields);
+  },
   // HandleInfo(proc=processHistogramData),
-  [IncomeMessageType.HISTOGRAM_DATA]: todo('HISTOGRAM_DATA'),
+  [IncomeMessageType.HISTOGRAM_DATA]: function (fields) {
+    this.emit('HISTOGRAM_DATA', fields);
+  },
   // HandleInfo(proc=processRerouteMktDataReq),
-  [IncomeMessageType.REROUTE_MKT_DATA_REQ]: todo('REROUTE_MKT_DATA_REQ'),
+  [IncomeMessageType.REROUTE_MKT_DATA_REQ]: function (fields) {
+    this.emit('REROUTE_MKT_DATA_REQ', fields);
+  },
   // HandleInfo(proc=processRerouteMktDepthReq),
-  [IncomeMessageType.REROUTE_MKT_DEPTH_REQ]: todo('REROUTE_MKT_DEPTH_REQ'),
+  [IncomeMessageType.REROUTE_MKT_DEPTH_REQ]: function (fields) {
+    this.emit('REROUTE_MKT_DEPTH_REQ', fields);
+  },
   // HandleInfo(proc=processMarketRuleMsg),
-  [IncomeMessageType.MARKET_RULE]: todo('MARKET_RULE'),
+  [IncomeMessageType.MARKET_RULE]: function (fields) {
+    this.emit('MARKET_RULE', fields);
+  },
   // HandleInfo(proc=processPnLMsg),
-  [IncomeMessageType.PNL]: todo('PNL'),
+  [IncomeMessageType.PNL]: function (fields) {
+    this.emit('PNL', fields);
+  },
   // HandleInfo(proc=processPnLSingleMsg),
-  [IncomeMessageType.PNL_SINGLE]: todo('PNL_SINGLE'),
+  [IncomeMessageType.PNL_SINGLE]: function (fields) {
+    this.emit('PNL_SINGLE', fields);
+  },
 
 
 
@@ -746,7 +836,9 @@ export default {
 
 
   // HandleInfo(proc=processOrderBoundMsg),
-  [IncomeMessageType.ORDER_BOUND]: todo('ORDER_BOUND'),
+  [IncomeMessageType.ORDER_BOUND]: function (fields) {
+    this.emit('ORDER_BOUND', fields);
+  },
 
 
 
