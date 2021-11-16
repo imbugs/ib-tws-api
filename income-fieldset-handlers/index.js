@@ -73,7 +73,7 @@ export default {
       marketCapPrice = parseFloat(fields.shift());
     }
 
-    this.emit('orderStatus', {
+    let orderStatus = {
       orderId: orderId,
       status: status,
       filled: filled,
@@ -85,12 +85,14 @@ export default {
       clientId: clientId,
       whyHeld: whyHeld,
       marketCapPrice: marketCapPrice
-    });
+    }
+    this.emit('orderStatus', orderStatus);
+
+    if (status == 'Filled') {
+      this.emit('orderFilled', orderStatus);
+    }
+
   },
-
-
-
-
 
   [IncomeMessageType.ERR_MSG]: function (fields) {
     this.emit('ERR_MSG', fields);
@@ -109,14 +111,10 @@ export default {
     }
   },
 
-
-
   [IncomeMessageType.OPEN_ORDER]: function (fields) {
     this.emit('OPEN_ORDER', fields);
     handler_OPEN_ORDER.bind(this)(fields);
   },
-
-
 
   // HandleInfo(wrap=EWrapper.updateAccountValue),
   [IncomeMessageType.ACCT_VALUE]: function (fields) {
@@ -286,6 +284,7 @@ export default {
       fillPrice,
     })
   },
+  
   // HandleInfo(wrap=EWrapper.updateMktDepth),
   [IncomeMessageType.MARKET_DEPTH]: function (fields) {
     this.emit('MARKET_DEPTH', fields);
