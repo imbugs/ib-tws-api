@@ -13,6 +13,7 @@ const contain = (list = new Set(), object) => {
 
 const duplicate = (type, data, timeout = 1000) => {
     if (type && data) {
+        data = _.cloneDeep(data);
         if (!dupData[type]) {
             dupData[type] = new Set();
         }
