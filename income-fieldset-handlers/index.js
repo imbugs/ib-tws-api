@@ -239,15 +239,14 @@ export default {
     storage.push(contract);
   },
 
-
-
   // HandleInfo(proc=processExecutionDataMsg),
   [IncomeMessageType.EXECUTION_DATA]: function (fields) {
     this.emit('EXECUTION_DATA', fields);
-    fields.shift();
-    fields.shift();
-    fields.shift();
-    fields.shift();
+
+    let version = fields.shift();
+    let reqId = fields.shift();
+    let orderId = fields.shift();
+    let conId = fields.shift();
 
     let symbol = fields.shift();
     let secType = fields.shift();
@@ -274,6 +273,10 @@ export default {
     let fillPrice = parseFloat(fields.shift());
 
     this.emit('executionData', {
+      version,
+      reqId,
+      orderId,
+      conId,
       symbol,
       secType,
       currency,
