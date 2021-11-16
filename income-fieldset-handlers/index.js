@@ -20,7 +20,7 @@ import {
   handler_COMPLETED_ORDER
 } from './order.js';
 
-
+import duplicate from "../utils/duplicate.js";
 
 //
 // helper functions
@@ -52,6 +52,11 @@ export default {
   },
 
   [IncomeMessageType.ORDER_STATUS]: function (fields) {
+    if (duplicate('ORDER_STATUS', fields, 5000)) {
+      // 5秒内有重复
+      return;
+    }
+
     this.emit('ORDER_STATUS', fields);
 
     fields.shift();
@@ -86,12 +91,10 @@ export default {
       whyHeld: whyHeld,
       marketCapPrice: marketCapPrice
     }
+
     this.emit('orderStatus', orderStatus);
-
-    if (status == 'Filled') {
-      this.emit('orderFilled', orderStatus);
-    }
-
+    // 不同的状态触发不同事件
+    this.emit(`order${status}`, orderStatus);
   },
 
   [IncomeMessageType.ERR_MSG]: function (fields) {
@@ -284,7 +287,7 @@ export default {
       fillPrice,
     })
   },
-  
+
   // HandleInfo(wrap=EWrapper.updateMktDepth),
   [IncomeMessageType.MARKET_DEPTH]: function (fields) {
     this.emit('MARKET_DEPTH', fields);
@@ -354,8 +357,6 @@ export default {
       bars: bars
     });
   },
-
-
 
   [IncomeMessageType.HISTORICAL_DATA_UPDATE]: function (fields) {
     this.emit('HISTORICAL_DATA_UPDATE', fields);
